@@ -9,8 +9,8 @@ public class Music
     public string Description { get; set; }
     public DateTime UploadedAt { get; set; }
     public int NumberOfPlays { get; set; }
-    public DownloadedMusic DownloadedMusic { get; set; }
     public ICollection<PlayListMusic> PlayListMusics { get; set; }
     public ICollection<UserInteraction> UserInteractions { get; set; }
-    
+    public ICollection<DownloadedMusic> downloadedMusics { get; set; }
+
 }
