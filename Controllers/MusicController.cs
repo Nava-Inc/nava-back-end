@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Nava.Dto;
+using Nava.Entities;
+using Nava.Interface;
 
 namespace Nava.Controllers;
 
@@ -7,17 +11,31 @@ namespace Nava.Controllers;
 public class MusicController : ControllerBase
 {
     private readonly ILogger<MusicController> _logger;
+    private readonly IMusicRepository _musicRepository;
+    private readonly IMapper _mapper;
 
-    public MusicController(ILogger<MusicController> logger)
+    public MusicController(ILogger<MusicController> logger, IMusicRepository musicRepository , IMapper mapper)
     {
         _logger = logger;
+        _musicRepository = musicRepository;
+        _mapper = mapper;
     }
 
-    [HttpGet(Name = "MusicInfo")]
-    public IActionResult MusicInfo()
+    [HttpGet("musicInfo", Name = "MusicInfo")]
+    [ProducesResponseType(200 , Type = typeof(Music))]
+    [ProducesResponseType(400)]
+    public IActionResult MusicInfo(int id)
     {
-        // return info of a music, including the user interactions with that music
-        throw new NotImplementedException();
+
+        if (!_musicRepository.MusicExists(id)) { 
+            return NotFound();  
+        }
+        var music = _mapper.Map<MusicDto>(_musicRepository.GetMusic(id));
+
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        return Ok(music);
     }
     
     
