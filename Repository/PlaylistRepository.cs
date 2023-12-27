@@ -51,4 +51,19 @@ public class PlaylistRepository : IPlaylistRepository
 
         return playlistMusic;
     }
+
+    public PlayListMusic? RemoveMusicFromPlaylist(int playlistId, int musicId)
+    {
+        var playListMusic =
+            _context.playListMusics.FirstOrDefault(a => a.Music.ID.Equals(musicId) && a.PlayList.ID.Equals(playlistId));
+
+        if (playListMusic == null)
+        {
+            return null;
+        }
+
+        _context.playListMusics.Remove(playListMusic);
+        _context.SaveChanges();
+        return playListMusic;
+    }
 }

@@ -20,10 +20,8 @@ public class PlaylistController : ControllerBase
     public async Task<IActionResult> Musics(int playlistId)
     {
         var result = _playlistRepository.GetMusicByPlaylist(playlistId);
-        if (result == null || !ModelState.IsValid)
-        {
+        if (!ModelState.IsValid)
             return BadRequest();
-        }
 
         return Ok(result);
     }
@@ -32,17 +30,19 @@ public class PlaylistController : ControllerBase
     public async Task<IActionResult> Add(int musicId, int playlistId)
     {
         var result = _playlistRepository.AddMusicToPlaylist(playlistId, musicId);
-        if (result == null || !ModelState.IsValid)
-        {
+        if (!ModelState.IsValid)
             return BadRequest();
-        }
 
         return Ok();
     }
 
     [HttpDelete(Name = "RemoveMusicFromPlaylist")]
-    public async Task<IActionResult> Remove()
+    public async Task<IActionResult> Remove(int musicId, int playlistId)
     {
-        throw new NotImplementedException();
+        var result = _playlistRepository.RemoveMusicFromPlaylist(playlistId, musicId);
+        if (!ModelState.IsValid)
+            return BadRequest();
+
+        return Ok(result);
     }
 }
