@@ -12,12 +12,15 @@ public class MusicController : ControllerBase
 {
     private readonly ILogger<MusicController> _logger;
     private readonly IMusicRepository _musicRepository;
+    private readonly IUserInteractionsRepository _userInteractionRepository;
     private readonly IMapper _mapper;
 
-    public MusicController(ILogger<MusicController> logger, IMusicRepository musicRepository, IMapper mapper)
+    public MusicController(ILogger<MusicController> logger, IMusicRepository musicRepository,
+        IUserInteractionsRepository userInteractionsRepository, IMapper mapper)
     {
         _logger = logger;
         _musicRepository = musicRepository;
+        _userInteractionRepository = userInteractionsRepository;
         _mapper = mapper;
     }
 
@@ -72,15 +75,34 @@ public class MusicController : ControllerBase
     }
 
     [HttpPatch("like", Name = "ToggleLike")]
-    public IActionResult ToggleLike([FromBody] bool likeStatus)
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public IActionResult ToggleLike(int userId, int musicId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var result = _userInteractionRepository.ToggleLike(userId, musicId);
+            return result ? Ok() : BadRequest();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return BadRequest();
+        }
     }
 
 
-    [HttpPost(Name = "Comment")]
-    public IActionResult Comment([FromBody] string comment)
+    [HttpPost("comment", Name = "Comment")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    public IActionResult Comment(int userId, int musicId, [FromBody] string comment)
     {
-        throw new NotImplementedException();
+        var result = _userInteractionRepository.PostComment(userId, musicId, comment);
+        if (!result || !ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        return Ok($"comment posted successfully by {userId} at {DateTime.Now}. {comment}");
     }
 }
