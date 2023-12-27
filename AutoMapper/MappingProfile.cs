@@ -8,6 +8,9 @@ namespace Nava.AutoMapper
     {
         public MappingProfile() {
             CreateMap<Music, MusicDto>();
+            CreateMap<Music, MusicContentDto>();
+            CreateMap<UserInfo, UserInfoDto>();
+            CreateMap<UserInfo, UpdateUserInfoDto>();
         }
     }
 }
