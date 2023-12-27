@@ -11,5 +11,6 @@ namespace Nava.Interface
         MusicDto? GetMusicInfo(int id);
         UploadMusicDto? UploadMusic(int userId, UploadMusicDto musicDto);
         MusicContentDto? GetMusicContent(int id);
+        MusicDto? DeleteMusic(int id);
     }
 }

@@ -105,4 +105,16 @@ public class MusicController : ControllerBase
 
         return Ok($"comment posted successfully by {userId} at {DateTime.Now}. {comment}");
     }
+    
+    [HttpDelete("remove", Name = "RemoveMusic")]
+    public IActionResult RemoveMusic(int id)
+    {
+        var result = _musicRepository.DeleteMusic(id);
+        if (result == null || !ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        return Ok(result);
+    }
 }

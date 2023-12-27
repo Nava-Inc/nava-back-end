@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nava.Interface;
 
 namespace Nava.Controllers;
 
@@ -7,22 +8,36 @@ namespace Nava.Controllers;
 public class PlaylistController : ControllerBase
 {
     private readonly ILogger<PlaylistController> _logger;
+    private readonly IPlaylistRepository _playlistRepository;
 
-    public PlaylistController(ILogger<PlaylistController> logger)
+    public PlaylistController(ILogger<PlaylistController> logger, IPlaylistRepository playlistRepository)
     {
         _logger = logger;
+        _playlistRepository = playlistRepository;
     }
 
     [HttpGet(Name = "PlaylistMusics")]
-    public async Task<IActionResult> Musics()
+    public async Task<IActionResult> Musics(int playlistId)
     {
-        throw new NotImplementedException();
+        var result = _playlistRepository.GetMusicByPlaylist(playlistId);
+        if (result == null || !ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        return Ok(result);
     }
 
     [HttpPost(Name = "AddMusicToPlaylist")]
-    public async Task<IActionResult> Add()
+    public async Task<IActionResult> Add(int musicId, int playlistId)
     {
-        throw new NotImplementedException();
+        var result = _playlistRepository.AddMusicToPlaylist(playlistId, musicId);
+        if (result == null || !ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        return Ok();
     }
 
     [HttpDelete(Name = "RemoveMusicFromPlaylist")]

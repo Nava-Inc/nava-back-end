@@ -12,8 +12,8 @@ using Nava.Data;
 namespace Nava.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231221160957_initial")]
-    partial class initial
+    [Migration("20231227010453_third")]
+    partial class third
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,6 +91,10 @@ namespace Nava.Migrations
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("time");
 
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -100,6 +104,9 @@ namespace Nava.Migrations
 
                     b.Property<DateTime>("UploadedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("ID");
 

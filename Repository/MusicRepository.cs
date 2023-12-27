@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
 using Nava.Data;
 using Nava.Dto;
 using Nava.Entities;
@@ -21,24 +22,25 @@ namespace Nava.Repository
 
         public MusicDto? GetMusicInfo(int id)
         {
-            var musicInfo = _mapper.Map<MusicDto>(_context.musics.Where(m => m.ID == id).FirstOrDefault());
+            var musicInfo = _mapper.Map<MusicDto>(_context.musics.FirstOrDefault(m => m.ID == id && !m.isDeleted));
 
             return musicInfo ?? null;
         }
 
-        public UploadMusicDto? UploadMusic(int userId, UploadMusicDto musicDto)
+        public UploadMusicDto? UploadMusic(int userId, UploadMusicDto musicDto) // todo
         {
             try
             {
                 var music = new Music();
                 music.ArtistId = userId;
                 music.Name = musicDto.Name;
+                music.isDeleted = false;
                 // music.Duration ==                           // todo
                 music.Description = musicDto.Description;
                 music.UploadedAt = DateTime.Now;
                 music.NumberOfPlays = 0;
                 music.FilePath = $"{Guid.NewGuid().ToString()}_{musicDto.Name}"; // unique file name
-                File.WriteAllBytes(_configuration["FilesPath"] ?? "./Files" + music.FilePath, musicDto.FileContent);
+                File.WriteAllBytes(_configuration["FilesPath"] ?? "./Files" + music.FilePath, Convert.FromBase64String(musicDto.FileContent));
 
                 _context.musics.Add(music);
                 _context.SaveChanges();
@@ -53,7 +55,8 @@ namespace Nava.Repository
 
         public MusicContentDto? GetMusicContent(int id)
         {
-            var musicContent = _mapper.Map<MusicContentDto>(_context.musics.Where(m => m.ID == id).FirstOrDefault());
+            var musicContent =
+                _mapper.Map<MusicContentDto>(_context.musics.FirstOrDefault(m => m.ID == id && !m.isDeleted));
             if (musicContent == null)
             {
                 return null;
@@ -65,6 +68,19 @@ namespace Nava.Repository
             // return music == null ? null : File.ReadAllBytes(_configuration["FilesPath"] ?? "./Files" + music.FilePath);
         }
 
+        public MusicDto? DeleteMusic(int id)
+        {
+            var music = _context.musics.FirstOrDefault(m => m.ID.Equals(id));
+            if (music == null)
+            {
+                return null;
+            }
+
+            music.isDeleted = true;
+            _context.SaveChanges();
+            return _mapper.Map<MusicDto>(music);
+        }
+
         public ICollection<Music> GetMusics()
         {
             return _context.musics.OrderBy(m => m.ID).ToList();
@@ -72,7 +88,7 @@ namespace Nava.Repository
 
         public bool MusicExists(int id)
         {
-            return _context.musics.Any(m => m.ID == id);
+            return _context.musics.Any(m => m.ID == id && !m.isDeleted);
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Nava.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,11 +18,13 @@ namespace Nava.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ArtistId = table.Column<int>(type: "int", nullable: false),
+                    NumberOfPlays = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Duration = table.Column<TimeSpan>(type: "time", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UploadedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NumberOfPlays = table.Column<int>(type: "int", nullable: false)
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duration = table.Column<TimeSpan>(type: "time", nullable: false),
+                    UploadedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -192,14 +194,14 @@ namespace Nava.Migrations
                 column: "OwnerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_userInteractions_UserID",
-                table: "userInteractions",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_userInteractions_musicID",
                 table: "userInteractions",
                 column: "musicID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_userInteractions_UserID",
+                table: "userInteractions",
+                column: "UserID");
         }
 
         /// <inheritdoc />

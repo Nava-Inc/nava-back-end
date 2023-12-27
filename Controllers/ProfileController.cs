@@ -10,7 +10,7 @@ namespace Nava.Controllers;
 public class ProfileController : ControllerBase
 {
     private readonly ILogger<ProfileController> _logger;
-    private IUserInfoRepository _userInfoRepository;
+    private readonly IUserInfoRepository _userInfoRepository;
     private readonly IMapper _mapper;
 
 
@@ -46,18 +46,11 @@ public class ProfileController : ControllerBase
             [FromBody] UpdateUserInfoDto userInfoDto)
     {
         var result = _mapper.Map<UpdateUserInfoDto>(_userInfoRepository.UpdateUserInfo(id, userInfoDto));
-        if (result != null)
+        if (result == null || !ModelState.IsValid)
         {
-            return Ok(result);
+            return BadRequest("error occured during the update.");
         }
-
-        return BadRequest("error occured during the update.");
-    }
-
-
-    [HttpDelete("Musics/Remove", Name = "RemoveMusic")]
-    public IActionResult RemoveMusic()
-    {
-        throw new NotImplementedException(); // todo: we should have a music model for this part
+        
+        return Ok(result);
     }
 }
