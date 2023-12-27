@@ -42,4 +42,29 @@ public class UserInfoRepository : IUserInfoRepository
         var user = _context.userInfos.FirstOrDefault(u => u.Username.Equals(username) && u.Password.Equals(password));
         return user;
     }
+
+    public UserInfo? UserExists(string username)
+    {
+        var user = _context.userInfos.FirstOrDefault(u => u.Username.Equals(username));
+        return user;
+    }
+
+    public UserInfo? CreateUser(string username, string password, string email, int accountType)
+    {
+        if (UserExists(username)!= null)
+        {
+            return null;
+        }
+
+        var user = _context.userInfos.Add(new UserInfo
+        {
+            Username = username,
+            Password = password,
+            Email = email,
+            AccountType = accountType,
+            CreatedAt = DateTime.Now
+        });
+        _context.SaveChanges();
+        return user.Entity;
+    }
 }

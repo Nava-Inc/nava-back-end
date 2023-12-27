@@ -30,7 +30,6 @@ public class AuthController : ControllerBase
             return Unauthorized(); // Return 401 Unauthorized if authentication fails
         }
 
-        // todo: create claims
         // Create claims for the user
         var claims = new[]
         {
@@ -60,15 +59,14 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> SignUp([FromBody] SignUpModel model)
     {
         // todo: implement
-        /*// Check if user already exists
-        if (await _userRepository.UserExistsAsync(model.Username))
+        // Check if user already exists
+        if (_userInfoRepository.UserExists(model.Username) != null)
         {
             return Conflict("User already exists"); // Return 409 Conflict if user exists
         }
 
-        var newUser = await _userRepository.CreateUserAsync(model.Username, model.Password);
-        return Ok(newUser);*/
-        return Ok("not implemented yet");
+        var newUser = _userInfoRepository.CreateUser(model.Username, model.Password, model.Email, model.AccountType);
+        return Ok(newUser);
     }
 
     [Authorize]
@@ -90,5 +88,7 @@ public class AuthController : ControllerBase
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Email { get; set; }
+        public int AccountType { get; set; }
     }
 }

@@ -67,7 +67,7 @@ builder.Services.AddAuthentication(options =>
             ValidIssuer = "http://localhost:5004/api/auth/login", // todo: Replace with your issuer
             ValidAudience = "http://localhost:5004/Music/musicinfo", // todo: Replace with your audience
             IssuerSigningKey =
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKeyWithTheLengthOfMoreThan32Characters")) // todo: Replace with your secret key
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKeyWithTheLengthOfMoreThan32Characters")) 
         };
     });
 
