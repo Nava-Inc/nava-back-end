@@ -40,7 +40,8 @@ namespace Nava.Repository
                 music.UploadedAt = DateTime.Now;
                 music.NumberOfPlays = 0;
                 music.FilePath = $"{Guid.NewGuid().ToString()}_{musicDto.Name}"; // unique file name
-                File.WriteAllBytes(_configuration["FilesPath"] ?? "./Files" + music.FilePath, Convert.FromBase64String(musicDto.FileContent));
+                File.WriteAllBytes(_configuration["FilesPath"] ?? "./Files" + music.FilePath,
+                    Convert.FromBase64String(musicDto.FileContent));
 
                 _context.musics.Add(music);
                 _context.SaveChanges();
@@ -79,6 +80,12 @@ namespace Nava.Repository
             music.isDeleted = true;
             _context.SaveChanges();
             return _mapper.Map<MusicDto>(music);
+        }
+
+        public List<MusicDto>? SearchMusic(string query)
+        {
+            var searchResult = _mapper.Map<List<MusicDto>>(_context.musics.Where(m => m.Name.Contains(query)).ToList());
+            return searchResult;
         }
 
         public ICollection<Music> GetMusics()

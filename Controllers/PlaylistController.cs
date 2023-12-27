@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nava.Interface;
 
 namespace Nava.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class PlaylistController : ControllerBase
 {
     private readonly ILogger<PlaylistController> _logger;

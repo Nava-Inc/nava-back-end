@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nava.Dto;
 using Nava.Interface;
@@ -7,6 +8,7 @@ namespace Nava.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class ProfileController : ControllerBase
 {
     private readonly ILogger<ProfileController> _logger;

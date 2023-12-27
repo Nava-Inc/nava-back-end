@@ -36,4 +36,10 @@ public class UserInfoRepository : IUserInfoRepository
             return null;
         }
     }
+
+    public UserInfo? AuthenticateUser(string username, string password)
+    {
+        var user = _context.userInfos.FirstOrDefault(u => u.Username.Equals(username) && u.Password.Equals(password));
+        return user;
+    }
 }

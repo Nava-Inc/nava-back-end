@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nava.Dto;
 using Nava.Entities;
@@ -8,10 +9,11 @@ namespace Nava.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class MusicController : ControllerBase
 {
     private readonly ILogger<MusicController> _logger;
-    private readonly IMusicRepository _musicRepository;
+        private readonly IMusicRepository _musicRepository;
     private readonly IUserInteractionsRepository _userInteractionRepository;
     private readonly IMapper _mapper;
 
