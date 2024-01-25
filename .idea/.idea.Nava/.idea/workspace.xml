@@ -9,15 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a93ed6b7-2da2-4426-8af4-7472e6180918" name="Changes" comment="rider directory added to gitignore">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Nava/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Nava/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/MusicController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MusicController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dto/Music/UploadMusicDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Dto/Music/UploadMusicDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Files/Sting-Shape-of-My-Heart-128.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Interface/IMusicRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Interface/IMusicRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Repository/MusicRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Repository/MusicRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
+    <list default="true" id="a93ed6b7-2da2-4426-8af4-7472e6180918" name="Changes" comment="gitignore updated">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Nava/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Nava/.idea/indexLayout.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Nava/.idea/projectSettingsUpdater.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Nava/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Nava/.idea/workspace.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
