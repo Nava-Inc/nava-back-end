@@ -63,11 +63,13 @@ public class MusicController : ControllerBase
     }
 
     [HttpPost("upload", Name = "UploadMusic")]
+    [Consumes("multipart/form-data")]
     [ProducesResponseType(200, Type = typeof(UploadMusicDto))]
     [ProducesResponseType(400)]
-    public IActionResult UploadMusic(int userId, [FromBody] UploadMusicDto musicDto)
+    [ProducesResponseType(415)] // Unsupported Media Type
+    public async Task<IActionResult> UploadMusic(int userId, [FromForm] UploadMusicDto musicDto)
     {
-        var result = _musicRepository.UploadMusic(userId, musicDto);
+        var result = await _musicRepository.UploadMusic(userId, musicDto);
         if (result == null || !ModelState.IsValid)
         {
             return BadRequest();

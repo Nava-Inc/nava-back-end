@@ -9,7 +9,7 @@ namespace Nava.Interface
 
         bool MusicExists(int id);
         MusicDto? GetMusicInfo(int id);
-        UploadMusicDto? UploadMusic(int userId, UploadMusicDto musicDto);
+        Task<UploadMusicDto?> UploadMusic(int userId, UploadMusicDto musicDto);
         MusicContentDto? GetMusicContent(int id);
         MusicDto? DeleteMusic(int id);
         List<MusicDto>? SearchMusic(string query);

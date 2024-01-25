@@ -27,7 +27,7 @@ namespace Nava.Repository
             return musicInfo ?? null;
         }
 
-        public UploadMusicDto? UploadMusic(int userId, UploadMusicDto musicDto) // todo
+        public async Task<UploadMusicDto?> UploadMusic(int userId, UploadMusicDto musicDto) 
         {
             try
             {
@@ -39,12 +39,21 @@ namespace Nava.Repository
                 music.Description = musicDto.Description;
                 music.UploadedAt = DateTime.Now;
                 music.NumberOfPlays = 0;
-                music.FilePath = $"{Guid.NewGuid().ToString()}_{musicDto.Name}"; // unique file name
-                File.WriteAllBytes(_configuration["FilesPath"] ?? "./Files" + music.FilePath,
-                    Convert.FromBase64String(musicDto.FileContent));
+                music.FilePath = $"{Guid.NewGuid().ToString()}_{musicDto.File.FileName}"; // unique file name
+
+                var directoryPath = _configuration["FilesPath"] ?? ".\\Files";
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                var stream = new FileStream(directoryPath + $"\\{music.FilePath}",
+                    FileMode.Create);
+                await musicDto.File.CopyToAsync(stream);
+
 
                 _context.musics.Add(music);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return musicDto;
             }
             catch (Exception e)
@@ -56,17 +65,19 @@ namespace Nava.Repository
 
         public MusicContentDto? GetMusicContent(int id)
         {
-            var musicContent =
-                _mapper.Map<MusicContentDto>(_context.musics.FirstOrDefault(m => m.ID == id && !m.isDeleted));
-            if (musicContent == null)
+            var music = _context.musics.FirstOrDefault(m => m.ID == id && !m.isDeleted);
+            if (music == null)
             {
                 return null;
             }
 
-            musicContent.FileContent = File.ReadAllBytes(
-                "C:\\Hosain\\Uni\\TERM7\\SE\\proj2\\nava-back-end\\Files\\Sting-Shape-of-My-Heart-128.mp3"); // todo: delete
+            var musicContent = new MusicContentDto
+            {
+                Name = music.Name + music.FilePath[music.FilePath.LastIndexOf('.')..],
+                FileContent = File.ReadAllBytes((_configuration["FilesPath"] ?? ".\\Files") + "\\" + music.FilePath)
+            };
+            
             return musicContent;
-            // return music == null ? null : File.ReadAllBytes(_configuration["FilesPath"] ?? "./Files" + music.FilePath);
         }
 
         public MusicDto? DeleteMusic(int id)
