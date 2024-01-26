@@ -47,10 +47,10 @@ namespace Nava.Repository
                     Directory.CreateDirectory(directoryPath);
                 }
 
-                var stream = new FileStream(directoryPath + $"\\{music.FilePath}",
-                    FileMode.Create);
-                await musicDto.File.CopyToAsync(stream);
-
+                await using (var stream = new FileStream(directoryPath + $"\\{music.FilePath}", FileMode.Create))
+                {
+                    await musicDto.File.CopyToAsync(stream);
+                }
 
                 _context.musics.Add(music);
                 await _context.SaveChangesAsync();
