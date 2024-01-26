@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  nava-app:
+    image: nava-image
+    ports:
+      - "5001:8080"
+    container_name: nava-container
