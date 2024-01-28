@@ -6,3 +6,8 @@ services:
     ports:
       - "5001:8080"
     container_name: nava-container
+    environment:
+      - CONNECTION_STRING=Data Source=host.docker.internal;Initial Catalog=Nava;User ID=navaUser;Password=navaUser;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
+    volumes:
+      - C:\Hosain\Uni\TERM7\SE\proj\nava-back-end\Files:/App/Files
+ 

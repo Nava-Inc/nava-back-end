@@ -49,7 +49,9 @@ builder.Services.AddSwaggerGen(opt =>
 });
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer((Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ? 
+        Environment.GetEnvironmentVariable("CONNECTION_STRING")
+        : builder.Configuration.GetConnectionString("DefaultConnection"))!);
 });
 
 builder.Services.AddAuthentication(options =>
