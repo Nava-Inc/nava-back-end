@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Nava.Interface;
@@ -9,6 +10,7 @@ using Nava.Interface;
 namespace Nava.Controllers;
 
 [ApiController]
+[EnableCors("AllowAllOrigins")]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
@@ -56,9 +58,8 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromBody] SignUpModel model)
+    public async Task<IActionResult> SignUp([FromForm] SignUpModel model)
     {
-        // todo: implement
         // Check if user already exists
         if (_userInfoRepository.UserExists(model.Username) != null)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Nava.Interface;
 
@@ -6,6 +7,7 @@ namespace Nava.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors("AllowAllOrigins")]
 public class SearchController : ControllerBase
 {
     private readonly ILogger<SearchController> _logger;
