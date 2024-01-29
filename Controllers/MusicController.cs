@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Nava.Dto;
 using Nava.Entities;
@@ -9,6 +10,7 @@ namespace Nava.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors("AllowAllOrigins")]
 [Authorize]
 public class MusicController : ControllerBase
 {

@@ -41,13 +41,24 @@ namespace Nava.Repository
                 music.NumberOfPlays = 0;
                 music.FilePath = $"{Guid.NewGuid().ToString()}_{musicDto.File.FileName}"; // unique file name
 
-                var directoryPath = _configuration["FilesPath"] ?? ".\\Files";
+                var directoryPath = /*_configuration["FilesPath"] ??*/ ".\\Files";
+                if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+                {
+                    directoryPath = "Files";
+                }
+                
                 if (!Directory.Exists(directoryPath))
                 {
                     Directory.CreateDirectory(directoryPath);
                 }
 
-                await using (var stream = new FileStream(directoryPath + $"\\{music.FilePath}", FileMode.Create))
+                var filePath = directoryPath + $"\\{music.FilePath}";
+                if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+                {
+                    filePath = directoryPath + $"/{music.FilePath}";
+                }
+                
+                await using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await musicDto.File.CopyToAsync(stream);
                 }
@@ -71,10 +82,15 @@ namespace Nava.Repository
                 return null;
             }
 
+            var contentPath = ( /*_configuration["FilesPath"] ??*/ ".\\Files") + "\\" + music.FilePath;
+            if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+            {
+                contentPath = "Files/" + music.FilePath;
+            }
             var musicContent = new MusicContentDto
             {
                 Name = music.Name + music.FilePath[music.FilePath.LastIndexOf('.')..],
-                FileContent = File.ReadAllBytes((_configuration["FilesPath"] ?? ".\\Files") + "\\" + music.FilePath)
+                FileContent = File.ReadAllBytes(contentPath)
             };
             
             return musicContent;

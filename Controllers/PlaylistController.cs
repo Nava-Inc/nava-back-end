@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Nava.Interface;
 
@@ -6,6 +7,7 @@ namespace Nava.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors("AllowAllOrigins")]
 [Authorize]
 public class PlaylistController : ControllerBase
 {
