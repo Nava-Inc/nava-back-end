@@ -58,15 +58,15 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromForm] SignUpModel model)
+    public async Task<IActionResult> SignUp([FromBody] SignUpModel model)
     {
         // Check if user already exists
-        if (_userInfoRepository.UserExists(model.Username) != null)
+        if (_userInfoRepository.UserExists(model.username) != null)
         {
             return Conflict("User already exists"); // Return 409 Conflict if user exists
         }
 
-        var newUser = _userInfoRepository.CreateUser(model.Username, model.Password, model.Email, model.AccountType);
+        var newUser = _userInfoRepository.CreateUser(model.username, model.password, model.email, model.accountType);
         return Ok(newUser);
     }
 
@@ -87,9 +87,9 @@ public class AuthController : ControllerBase
 
     public class SignUpModel
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
-        public int AccountType { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public string email { get; set; }
+        public int accountType { get; set; }
     }
 }
